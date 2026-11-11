@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your pass · GatePass</title>
+<meta name="description" content="Your entry pass. Show the QR at the gate.">
+<meta name="theme-color" content="#F3EBEA">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="../assets/img/icon.svg" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/oswald-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/gatepass.css">
+<script defer src="../config.js"></script>
+<script type="module" src="../assets/js/pass.js"></script>
+</head>
+<body>
+<!--
+THESIS: A pass is a printed gig ticket, not a QR in a card. The ticket IS the page: scalloped stock, a riso crowd strip, the name in blue ink, the event in fluoro pink, one big QR and a tear-off stub. Refuses the e-ticket template (logo bar, grey card, small QR, details table).
+OWN-WORLD: Warm paper #F3EBEA with fibre grain; two riso inks, fluoro pink #FF2FA2 and deep blue #1A43B4, with paper dropouts on every filled surface; Oswald condensed print voice, Barlow Semi Condensed for anything read at length; scalloped and perforated edges; dotted pink rules.
+STORY: Organiser uploads a sheet and gets a pass per row; attendee opens a link and shows the ticket; a gate phone turns green once and red forever after.
+FIRST VIEWPORT: (pass) Centered GatePass wordmark, then the full-width ticket: crowd art strip, name ~48px blue, pink rule, event title ~44px pink uppercase, date and venue, QR ~250px, dotted tear line with side notches, "Show this at the gate".
+FORM: Pinned by the user: concept A "gig poster" (ui-concepts/gatepass/gatepass_a_gigposter.png, chosen 11 Nov 2026), comp-led. No seed roll: a user-pinned direction beats the roll.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->
+<main class="app">
+  <header class="mast mast-center">
+    <a class="logo ink" href="../">GatePass</a>
+  </header>
+
+  <div id="view" aria-live="polite">
+    <div class="skeleton" style="height:min(150vw,720px)" aria-label="Loading your pass"></div>
+  </div>
+
+  <div class="scallops ink" aria-hidden="true"></div>
+</main>
+</body>
+</html>

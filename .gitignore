@@ -1,0 +1,18 @@
+node_modules/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+# local tooling and design-process scratch
+.claude/
+.impeccable/src/art_png/
+.impeccable/review/*-full.png
+.impeccable/review/crop-*.png
+
+# design process (kept local)
+.impeccable/
+PRODUCT.md
+DESIGN.md
+DESIGN.json
+supabase/.temp/

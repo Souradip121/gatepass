@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gate Scanner · GatePass</title>
+<meta name="description" content="Turn this phone into the gate scanner for a GatePass event.">
+<meta name="theme-color" content="#F3EBEA">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="../assets/img/icon.svg" type="image/svg+xml">
+<link rel="preload" href="../assets/fonts/oswald-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/gatepass.css">
+<script defer src="../config.js"></script>
+<script type="module" src="../assets/js/gate.js"></script>
+</head>
+<body>
+<!--
+THESIS: The gate phone is a light, not a form. One camera window with pink brackets, one verdict that fills the screen green once and red forever after, readable from arm's length in a noisy entrance.
+OWN-WORLD: Warm paper #F3EBEA, fluoro pink #FF2FA2 brackets and rules, deep blue #1A43B4 ink, verdict green #12844A / red #E0144C; Oswald condensed print voice; riso paper dropouts on filled surfaces.
+STORY: Staff type the 8-character code, pick a gate, point at passes. First scan green, every later scan of that pass red with the time and gate of the first.
+FIRST VIEWPORT: (gate) GatePass wordmark + "Gate Scanner"; event strip; camera window (~58% of the screen) with corner brackets; verdict banner; live "Checked in N / total".
+FORM: Pinned by the user: concept A "gig poster" (ui-concepts/gatepass/gatepass_a_gigposter.png). No seed roll: user-pinned.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->
+<main class="app">
+  <header class="mast">
+    <a class="logo ink" href="../">GatePass</a>
+    <span class="mast-role quiet">Gate Scanner</span>
+  </header>
+
+  <!-- join -->
+  <section id="join" class="stack" hidden>
+    <h1 class="head">Join a gate</h1>
+    <p class="sub">Type the event's gate code from the organiser. No account needed.</p>
+    <form id="joinForm" class="stack" novalidate>
+      <label class="field">
+        <span>Gate code</span>
+        <input class="input code-input" id="code" name="code" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" maxlength="9" placeholder="••••-••••" aria-describedby="joinErr" required>
+      </label>
+      <fieldset class="field" style="border:0;margin:0;padding:0">
+        <span>This gate</span>
+        <div class="chips" id="gateChips">
+          <label class="chip"><input type="radio" name="gate" value="Gate 1" checked><span>Gate 1</span></label>
+          <label class="chip"><input type="radio" name="gate" value="Gate 2"><span>Gate 2</span></label>
+          <label class="chip"><input type="radio" name="gate" value="Gate 3"><span>Gate 3</span></label>
+          <label class="chip"><input type="radio" name="gate" value="Desk"><span>Desk</span></label>
+        </div>
+      </fieldset>
+      <p class="err" id="joinErr" role="alert" hidden></p>
+      <button class="btn-primary compact" id="joinBtn" type="submit"><span class="label">Open scanner</span><span class="arrow" data-i="arrow"></span></button>
+    </form>
+    <p class="fine">Organiser? <a href="../">Sign in to make passes</a>.</p>
+  </section>
+
+  <!-- scanner -->
+  <section id="scan" hidden>
+    <div class="scan-head">
+      <p class="scan-event" id="evName"></p>
+      <span class="scan-gate" id="gateName"></span>
+    </div>
+    <div class="viewport" id="viewport">
+      <video id="video" playsinline muted></video>
+      <div class="brackets" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="cam-tools" id="camTools"></div>
+      <div class="cam-msg" id="camMsg"></div>
+    </div>
+
+    <div class="verdict idle" id="verdict" role="status" aria-live="assertive"></div>
+
+    <div class="counter" id="counter">
+      <span class="c-label">Checked in</span>
+      <span class="c-num" id="cNum">0 / 0</span>
+      <div class="bar"><i id="cBar"></i></div>
+    </div>
+
+    <div class="tools" style="margin-top:12px">
+      <button class="btn small" type="button" id="findBtn"></button>
+      <label class="btn small" style="cursor:pointer"><input type="file" accept="image/*" id="photo" class="sr"><span id="photoLbl"></span></label>
+      <button class="btn small pinkline" type="button" id="leaveBtn">Leave gate</button>
+    </div>
+
+    <h2 class="head section-gap" style="font-size:20px">Last scans</h2>
+    <ul class="recent" id="recent"></ul>
+  </section>
+
+  <div class="scallops ink" aria-hidden="true"></div>
+</main>
+
+<div class="flash" id="flash" aria-hidden="true"></div>
+</body>
+</html>

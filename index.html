@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GatePass · free QR entry passes for club events</title>
+<meta name="description" content="Upload your registrations sheet, everyone gets a QR pass, any phone becomes the gate scanner. Screenshots work once. Free and open source.">
+<meta name="theme-color" content="#F3EBEA">
+<meta property="og:title" content="GatePass: free QR entry for club events">
+<meta property="og:description" content="Upload your registrations. Everyone gets a pass. Any phone scans at the gate. Screenshots work once.">
+<meta property="og:image" content="assets/art/crowd.jpg">
+<link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/oswald-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/gatepass.css">
+<script defer src="config.js"></script>
+<script defer src="vendor/supabase.js"></script>
+<script type="module" src="assets/js/organiser.js"></script>
+</head>
+<body class="wide">
+<!--
+THESIS: The organiser's dashboard is the event's gig poster with the box office stapled under it: art and title on top, then the registrations sheet, one blue "Generate N passes" plate, and the live "Checked in N / total". Refuses the SaaS admin (sidebar, KPI tiles, data grid).
+OWN-WORLD: Warm paper #F3EBEA with fibre grain; fluoro pink #FF2FA2 and deep blue #1A43B4 riso inks with paper dropouts on filled surfaces; pink-tint #F8D5E4 rows with 12px corners; Oswald condensed print voice, Barlow Semi Condensed for reading; dotted pink rules; scalloped stub at the foot.
+STORY: Sign in with a magic link, make the event, drop in the sheet, generate passes, send links yourself, hand staff the gate code, watch the counter climb.
+FIRST VIEWPORT: (event) GatePass wordmark + ORGANISER; square riso poster with the title in fluoro pink and the club in blue; registrations row; blue Generate plate; Checked-in card with the pink bar.
+FORM: Pinned by the user: concept A "gig poster" (ui-concepts/gatepass/gatepass_a_gigposter.png). No seed roll: user-pinned.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->
+<main class="app">
+  <header class="mast">
+    <a class="logo ink" href="./" id="home">GatePass</a>
+    <span class="mast-role" id="role">Organiser</span>
+  </header>
+  <div id="view" aria-live="polite">
+    <div class="skeleton" style="height:420px"></div>
+  </div>
+  <footer class="foot">
+    <span>Made by <a href="https://www.instagram.com/souradip.sh/" rel="noopener">@souradip.sh</a> · free and <a href="https://github.com/Souradip121/gatepass" rel="noopener">open source</a></span>
+  </footer>
+  <div class="scallops ink" aria-hidden="true"></div>
+</main>
+</body>
+</html>
