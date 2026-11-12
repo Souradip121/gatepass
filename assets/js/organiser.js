@@ -89,7 +89,7 @@ function signInView(errMsg = "") {
 
       ${cfg.emailSignIn === false ? `
       <p class="err" id="sErr" role="alert" ${errMsg ? "" : "hidden"}>${esc(errMsg)}</p>
-      <button class="row" type="button" id="google" style="min-height:66px;justify-content:center;font-size:20px">${I.google}<span>Continue with Google</span></button>
+      <button class="btn-primary compact" type="button" id="google"><span class="gdisc">${I.google}</span><span class="label">Continue with Google</span><span class="arrow">${I.arrow}</span></button>
       <p class="fine" style="margin:0">Organisers sign in with Google. Gate staff and attendees never need an account.</p>` : `
       <form id="signin" class="stack" novalidate style="margin-top:6px">
         <label class="field"><span>Organiser email</span>
