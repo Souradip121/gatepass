@@ -55,6 +55,8 @@ function route() {
   stopLive();
   const h = location.hash || "";
   if (/access_token|error_description|refresh_token/.test(h)) return; // the SDK is still reading a sign-in link
+  if (route.last !== undefined && route.last !== h) window.scrollTo(0, 0);
+  route.last = h;
   if (!session) return signInView();
   roleEl.innerHTML = `Organiser <button class="icon-btn" type="button" id="signout" title="Sign out (${esc(session.user.email || "")})" aria-label="Sign out" style="width:36px;height:36px;margin-left:4px">${I.out}</button>`;
   roleEl.querySelector("#signout").addEventListener("click", async () => { await sb.auth.signOut(); location.hash = ""; });

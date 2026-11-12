@@ -487,4 +487,5 @@ label.row:focus-within { outline: 3px solid var(--pink); outline-offset: 3px; }
 .mast-role .icon-btn { border-color: transparent; background: transparent; }
 .mast-role .icon-btn:hover { background: var(--pink-tint); }
 .head.section-gap { margin-top: 28px; margin-bottom: 4px; }
-.verdict.dup .v-main { font-size: clamp(20px, 6vw, 26px); }
+.verdict.dup .v-main { font-size: clamp(22px, 6.6vw, 27px); text-wrap: balance; }
+.v-main { text-wrap: balance; }
