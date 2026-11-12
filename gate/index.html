@@ -57,11 +57,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <div class="scan-head">
       <p class="scan-event" id="evName"></p>
       <span class="scan-gate" id="gateName"></span>
+      <button class="leave" type="button" id="leaveBtn">Leave</button>
     </div>
     <div class="viewport" id="viewport">
       <video id="video" playsinline muted></video>
       <div class="brackets" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-      <div class="cam-tools" id="camTools"></div>
+      <div class="cam-tools">
+        <span id="camTools" style="display:contents"></span>
+        <button class="icon-btn" type="button" id="findBtn" aria-label="Find a guest by name" title="Find by name"></button>
+        <label class="icon-btn" title="Scan a photo of a pass"><input type="file" accept="image/*" id="photo" class="sr" aria-label="Scan a photo of a pass"><span id="photoLbl"></span></label>
+      </div>
       <div class="cam-msg" id="camMsg"></div>
     </div>
 
@@ -73,17 +78,13 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <div class="bar"><i id="cBar"></i></div>
     </div>
 
-    <div class="tools" style="margin-top:12px">
-      <button class="btn small" type="button" id="findBtn"></button>
-      <label class="btn small" style="cursor:pointer"><input type="file" accept="image/*" id="photo" class="sr"><span id="photoLbl"></span></label>
-      <button class="btn small pinkline" type="button" id="leaveBtn">Leave gate</button>
-    </div>
+    <p class="fine" style="margin:10px 0 0">Dead phone or cracked screen? Tap ${search} on the camera to find a guest by name. Camera won't start? Tap ${camera} to scan a photo.</p>
 
     <h2 class="head section-gap" style="font-size:20px">Last scans</h2>
     <ul class="recent" id="recent"></ul>
   </section>
 
-  <div class="scallops ink" aria-hidden="true"></div>
+  <div class="scallops inked" aria-hidden="true"></div>
 </main>
 
 <div class="flash" id="flash" aria-hidden="true"></div>

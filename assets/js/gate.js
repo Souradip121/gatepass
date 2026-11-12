@@ -1,5 +1,5 @@
 // Gate scanner. Staff hold the event's gate code; every call is a code-checked RPC.
-import { configured, rpc, esc, fmtTime, fmtCode, store, I, paintIcons, plural, PAUSED_MSG } from "./core.js";
+import { configured, rpc, esc, typo, fmtTime, fmtCode, store, I, paintIcons, plural, PAUSED_MSG } from "./core.js";
 import { Camera, decode, tokenFrom } from "./scanner.js";
 
 const $ = (id) => document.getElementById(id);
@@ -12,8 +12,9 @@ const S = {
 };
 store.set("gp.device", S.device);
 paintIcons();
-$("findBtn").innerHTML = `${I.search}Find by name`;
-$("photoLbl").innerHTML = `<span style="display:inline-flex;gap:10px;align-items:center">${I.camera}Scan a photo</span>`;
+$("findBtn").innerHTML = I.search;
+$("photoLbl").innerHTML = I.camera;
+document.querySelectorAll(".fine").forEach((p) => { p.innerHTML = p.innerHTML.replace("${search}", `<span style="display:inline-block;width:16px;height:16px;vertical-align:-3px">${I.search}</span>`).replace("${camera}", `<span style="display:inline-block;width:16px;height:16px;vertical-align:-3px">${I.camera}</span>`); });
 
 // ── sound + buzz (unlocked on the first tap) ──
 let ac;
@@ -253,9 +254,9 @@ $("leaveBtn").addEventListener("click", () => leave());
 
 function showScanner() {
   joinEl.hidden = true; scanEl.hidden = false;
-  $("evName").textContent = S.event.name;
+  $("evName").textContent = typo(S.event.name);
   $("gateName").textContent = S.gate;
-  document.title = `${S.gate} · ${S.event.name} · GatePass`;
+  document.title = `${S.gate} · ${typo(S.event.name)} · GatePass`;
   setCounts(S.event.counts);
   idle();
   loadStats();

@@ -1,7 +1,7 @@
 // Organiser app: sign in, events, registrations → passes, links, gate code, live counter.
 import {
   cfg, configured, ART, artUrl, passUrl, gateUrl, fmtCode, fmtWhen, fmtTime, fmtDay, esc, plural,
-  store, copyText, toast, download, qrSvg, I, paintIcons, PAUSED_MSG,
+  store, copyText, toast, download, qrSvg, I, paintIcons, PAUSED_MSG, escT, typo,
 } from "./core.js";
 import { parseTable, analyse, toPasses, toCsv, isEmail, isPhone } from "./csv.js";
 
@@ -87,6 +87,10 @@ function signInView(errMsg = "") {
       <div class="stack" style="margin-top:14px">
       <p class="sub" style="font-size:17px;color:var(--blue)">Upload your registrations sheet and everyone gets their own QR pass. At the gate, any phone becomes the scanner. A screenshot of a pass works once.</p>
 
+      ${cfg.emailSignIn === false ? `
+      <p class="err" id="sErr" role="alert" ${errMsg ? "" : "hidden"}>${esc(errMsg)}</p>
+      <button class="row" type="button" id="google" style="min-height:66px;justify-content:center;font-size:20px">${I.google}<span>Continue with Google</span></button>
+      <p class="fine" style="margin:0">Organisers sign in with Google. Gate staff and attendees never need an account.</p>` : `
       <form id="signin" class="stack" novalidate style="margin-top:6px">
         <label class="field"><span>Organiser email</span>
           <input class="input" type="email" id="email" autocomplete="email" inputmode="email" placeholder="you@college.edu" required value="${esc(store.get("gp.email", ""))}">
@@ -95,7 +99,7 @@ function signInView(errMsg = "") {
         <button class="btn-primary compact" type="submit" id="sendBtn"><span class="label">Send me a sign-in link</span><span class="arrow">${I.arrow}</span></button>
       </form>
       ${cfg.googleSignIn ? `<div class="or">or</div>
-      <button class="row" type="button" id="google" style="min-height:62px;justify-content:center">${I.google}<span>Continue with Google</span></button>` : ""}
+      <button class="row" type="button" id="google" style="min-height:62px;justify-content:center">${I.google}<span>Continue with Google</span></button>` : ""}`}
       <div class="links" style="margin-top:8px">
         <a href="gate/">${I.qr} Gate staff? Join with a code</a>
         <a href="https://github.com/Souradip121/gatepass" rel="noopener">${I.open} Host your own copy</a>
@@ -105,7 +109,7 @@ function signInView(errMsg = "") {
   view.querySelectorAll(".links svg").forEach((s) => { s.style.width = "18px"; s.style.height = "18px"; });
   view.querySelector("#art").style.backgroundImage = `url("${artUrl(0)}")`;
   const form = view.querySelector("#signin"), err = view.querySelector("#sErr"), btn = view.querySelector("#sendBtn");
-  form.addEventListener("submit", async (e) => {
+  form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const email = view.querySelector("#email").value.trim();
     if (!isEmail(email)) { err.textContent = "That email doesn't look right."; err.hidden = false; return; }
@@ -158,7 +162,7 @@ async function listView() {
       <a class="stub" href="#/e/${e.id}" style="${past ? "opacity:.72" : ""}">
         <span class="stub-art" style="background-image:url('${artUrl(e.art, true)}')"></span>
         <span class="stub-body">
-          <span class="stub-name ink">${esc(e.name)}</span>
+          <span class="stub-name ink">${escT(e.name)}</span>
           <span class="stub-meta">${esc(fmtWhen(e.starts_at))}${e.venue ? ` · ${esc(e.venue)}` : ""}</span>
         </span>
         <span class="stub-count">${checked} / ${total}<small>${total ? "checked in" : "no passes yet"}</small></span>
@@ -201,13 +205,13 @@ async function eventForm(id = null) {
     <a class="backlink" href="${id ? `#/e/${id}` : "#"}">${I.back}${id ? "Back to the event" : "Your events"}</a>
     <form id="evForm" class="stack" novalidate>
       <h1 class="head">${id ? "Edit event" : "New event"}</h1>
-      <label class="field"><span>Event name</span><input class="input" name="name" maxlength="80" required placeholder="Freshers' Night 2026" value="${esc(ev.name)}"></label>
-      <label class="field"><span>Club</span><input class="input" name="club" maxlength="80" placeholder="Photography Club" value="${esc(ev.club)}"></label>
+      <label class="field"><span>Event name</span><input class="input" name="name" maxlength="80" required placeholder="e.g. Freshers’ Night 2026" value="${esc(ev.name)}"></label>
+      <label class="field"><span>Club</span><input class="input" name="club" maxlength="80" placeholder="e.g. Photography Club" value="${esc(ev.club)}"></label>
       <div class="two">
         <label class="field"><span>Date</span><input class="input" type="date" name="date" required value="${ymd(when)}"></label>
         <label class="field"><span>Time</span><input class="input" type="time" name="time" required value="${hm(when)}"></label>
       </div>
-      <label class="field"><span>Venue</span><input class="input" name="venue" maxlength="120" placeholder="Main Auditorium" value="${esc(ev.venue)}"></label>
+      <label class="field"><span>Venue</span><input class="input" name="venue" maxlength="120" placeholder="e.g. Main Auditorium" value="${esc(ev.venue)}"></label>
       <fieldset class="field" style="border:0;margin:0;padding:0"><span>Poster art</span>
         <div class="art-pick">
           ${ART.map((a, i) => `<label><input type="radio" name="art" value="${i}" ${i === ev.art ? "checked" : ""} aria-label="${a.name}"><img src="${artUrl(i, true)}" alt="" loading="lazy" width="240" height="240"><span class="art-name">${a.name}</span></label>`).join("")}
@@ -266,13 +270,13 @@ async function eventView(id) {
   const state = { ev, passes, first: new Map(), bounced: 0, upload: null, filter: "", shown: 120 };
   for (const s of scans) s.is_first ? state.first.set(s.pass_id, s) : state.bounced++;
 
-  document.title = `${ev.name} · GatePass`;
+  document.title = `${typo(ev.name)} · GatePass`;
   view.innerHTML = `
     <a class="backlink" href="#">${I.back}Your events</a>
     <div class="dash">
       <div class="left stack">
         <div class="poster" id="poster">
-          <h1 class="poster-title ink">${esc(ev.name)}</h1>
+          <h1 class="poster-title ink">${escT(ev.name)}</h1>
           ${ev.club ? `<p class="poster-club">${esc(ev.club)}</p>` : ""}
           <span class="poster-when">${esc(fmtWhen(ev.starts_at))}${ev.venue ? ` · ${esc(ev.venue)}` : ""}</span>
         </div>

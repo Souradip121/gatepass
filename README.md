@@ -19,7 +19,7 @@ Made by [@souradip.sh](https://www.instagram.com/souradip.sh/).
 
 | Who | What they do | Account? |
 |---|---|---|
-| **Organiser** | Signs in with an email link (or Google), creates the event, uploads the registrations CSV (or pastes rows from Google Sheets). Gets one pass per row and copies or exports every link to send on WhatsApp or email. Watches "Checked in N / total" live. | Yes |
+| **Organiser** | Signs in (Google on the hosted copy; email magic link and/or Google on your own copy), creates the event, uploads the registrations CSV (or pastes rows from Google Sheets). Gets one pass per row and copies or exports every link to send on WhatsApp or email. Watches "Checked in N / total" live. | Yes |
 | **Attendee** | Opens their link and shows the ticket at the gate. A screenshot works too, once. | No |
 | **Gate staff** | Open `/gate/`, type the event's 8-character gate code, pick a gate name and point the camera at passes. "Find by name" covers dead phones. | No |
 
@@ -44,7 +44,7 @@ You need a free [Supabase](https://supabase.com) account and a GitHub account (o
 
 1. **Create a Supabase project.** supabase.com → New project. Any region close to your college (Mumbai `ap-south-1` for most of India). Save the database password somewhere; GatePass never needs it.
 2. **Run the schema.** In the project, open **SQL Editor → New query**, paste the whole of [`schema.sql`](schema.sql), and press **Run**. It creates three tables, their security rules and the scan functions, all prefixed `gp_`. It's safe to run again, and safe in a project that already has other tables.
-3. **Put your keys in `config.js`.** Fork this repo, then edit [`config.js`](config.js): set `supabaseUrl` and `supabaseAnonKey` from **Project Settings → API** (Project URL, and the `anon` `public` key). If you haven't turned on Google sign-in in Supabase, set `googleSignIn: false`.
+3. **Put your keys in `config.js`.** Fork this repo, then edit [`config.js`](config.js): set `supabaseUrl` and `supabaseAnonKey` from **Project Settings → API** (Project URL, and the `anon` `public` key). Pick the organiser sign-in: `emailSignIn: true` for the email magic link (works out of the box on a new project), and `googleSignIn: true` only after you set up Google in **Authentication → Providers**. The hosted copy ships with Google only.
 4. **Publish the site.**
    - **GitHub Pages:** in your fork, **Settings → Pages → Build and deployment → Deploy from a branch → `main` / `(root)`**. Your site appears at `https://<you>.github.io/gatepass/`.
    - **Netlify / Vercel:** import the repo. There is no build command; the publish directory is the repo root.
@@ -67,7 +67,7 @@ Open your site, sign in, make an event, and do a test scan with two phones.
 - Each phone picks a **gate name** (Gate 1, Gate 2, Desk). Repeat scans show which gate let the pass in first.
 - **Green** = let them in. **Red** = this pass was already used; the screen shows when and where. **Pink** = not a pass for this event.
 - **Torch** and **switch camera** buttons appear on phones that support them.
-- **Find by name** for a dead phone or cracked screen (check ID). **Scan a photo** if the live camera won't start.
+- The **magnifier** on the camera window finds a guest by name, for a dead phone or a cracked screen (check ID). The **camera** icon scans a photo of a pass if the live camera won't start.
 - No signal? GatePass never admits offline; the verdict says "No connection" and nobody is marked in.
 
 ## What's stored

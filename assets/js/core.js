@@ -76,6 +76,9 @@ export function fmtAgo(d) {
   return fmtWhen(d);
 }
 export const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// Display type prints a real apostrophe: FRESHERS’ NIGHT, not FRESHERS' NIGHT.
+export const typo = (s) => String(s ?? "").replace(/'/g, "’");
+export const escT = (s) => esc(typo(s));
 export const plural = (n, one, many = one + "s") => `${n} ${n === 1 ? one : many}`;
 
 // ── storage that never throws (private windows, in-app browsers) ──
@@ -119,7 +122,7 @@ export function download(name, text, type = "text/csv") {
 }
 
 // ── QR as SVG (one path, runs merged) ──
-export function qrSvg(text, { fg = "#1A43B4", margin = 2, label = "QR code" } = {}) {
+export function qrSvg(text, { fg = "#1A43B4", margin = 2, label = "QR code", ghost = null } = {}) {
   const q = qrcode(0, "M");
   q.addData(text, "Byte");
   q.make();
@@ -137,7 +140,9 @@ export function qrSvg(text, { fg = "#1A43B4", margin = 2, label = "QR code" } = 
       } else x++;
     }
   }
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges" role="img" aria-label="${esc(label)}"><path fill="${fg}" d="${d}"/></svg>`;
+  // ghost = a second riso plate a hair off register (light enough that scanners binarise it away)
+  const g = ghost ? `<path fill="${ghost}" opacity=".5" transform="translate(.24 .17)" d="${d}"/>` : "";
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges" role="img" aria-label="${esc(label)}">${g}<path fill="${fg}" d="${d}"/></svg>`;
 }
 
 // ── icons: utility glyphs share a 2.4 stroke; the comp's signature marks are filled ──
