@@ -43,6 +43,14 @@ function verdict(kind, main, sub = "") {
   verdictEl.className = `verdict ${kind}`;
   verdictEl.innerHTML = `<span class="v-ico">${ico}</span><div class="v-text"><p class="v-main">${main}</p>${sub ? `<p class="v-sub">${sub}</p>` : ""}</div>`;
   if (kind !== "idle") { void verdictEl.offsetWidth; verdictEl.classList.add("pop"); }
+  // "Name · First scan" reads as one line at the gate: step the size down before letting it wrap.
+  if (kind === "ok") {
+    const m = verdictEl.querySelector(".v-main");
+    let px = parseFloat(getComputedStyle(m).fontSize);
+    m.style.whiteSpace = "nowrap";
+    while (m.scrollWidth > m.clientWidth && px > 20) m.style.fontSize = `${--px}px`;
+    m.style.whiteSpace = "";
+  }
 }
 function flash(kind) {
   const f = $("flash");
